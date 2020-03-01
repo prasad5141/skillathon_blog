@@ -1,0 +1,14 @@
+<h1> article form</h1>
+
+
+{% for message in messages%}
+{{message}}
+{% endfor %}
+
+<form method="POST" action="">
+{% csrf_token %}
+{{form.as_p}}
+<input type="submit">
+
+</form>
+

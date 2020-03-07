@@ -2,15 +2,24 @@
 
 
 {% block content %}
-<h1>this is home page</h1>
 
-<h1>about</h1>
 
-{% for article in articles%}
-Id : {{article.id}}<br>
-Title :{{article.title}} <br>
-Content :{{article.content}}<br>
-Posted_on : {{article.posted_on}}<br><hr>
-{% endfor %}
+<div class="container" style="margin-top:50px;">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+        {% for article in articles%}
+        <a href="{% url 'get_article' article.id%}"><h2>{{article.title}}</h2> </a><br>
+        Content :{{article.content|truncatechars:300}}<br>
+        Posted_on : {{article.posted_on}}<br><hr>
+        {% endfor %}
+
+
+
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

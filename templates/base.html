@@ -18,7 +18,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="#">WebSiteName</a>
+      <a class="navbar-brand" href="{% url 'get_article' %}">DS Blog</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -26,10 +26,17 @@
         <li><a href="{%  url 'add_article' %}">Add Article</a></li>
         <li><a href="#">Page 3</a></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      </ul>
+      {% if user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user.get_username}}</a></li>
+            <li><a href="{% url 'logout'%}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+          </ul>
+      {% else %}
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{% url 'user_registration' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+              <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+      {% endif %}
     </div>
   </div>
 </nav>

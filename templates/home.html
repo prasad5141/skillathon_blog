@@ -3,23 +3,45 @@
 
 {% block content %}
 
-
-<div class="container" style="margin-top:50px;">
-    <div class="row">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-8">
-        {% for article in articles%}
-        <a href="{% url 'get_article' article.id%}"><h2>{{article.title}}</h2> </a><br>
-        Content :{{article.content|truncatechars:300}}<br>
-        Posted_on : {{article.posted_on}}<br><hr>
-        {% endfor %}
+<style>
+.article{
+   background-color: #fafaf7;
+}
+.listyle{
+       list-style-type: none;
+          margin:0 0 20px 0;
 
 
+}
+</style>
 
-        </div>
+
+<div class="container" style="margin-top:60px;">
+<ul>
+{% for article in articles%}
+<li id="{{article.id}}" class="listyle">
+    <div class="row" >
+    <div class="col-md-2">
     </div>
+
+    <div class="col-md-8"  style="background-color:#f7f6f2;">
+
+    <div class="articlebody tinku" style="margin:30px;">
+    <a href="{% url 'get_article' article.id%}"><h2>{{article.title}}</h2></a> <br>
+    <p >Published_on : {{article.posted_on}}<br>
+    <p style="margin-top:5px;">{{article.content|truncatechars:250}}</p><br>
+    </div>
+    
+
+    </div>
+    </div>
+</li>
+{% endfor %}
+</ul>
+
 </div>
-
-
 {% endblock %}
+
+
+
+

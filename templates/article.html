@@ -15,6 +15,12 @@
         {% endif%}
 
     </div>
+    <div class="col-md-2">
+      {% if is_owner %}
+        <a href="{% url 'update_article' article.id %}"><button class="btn btn-default"> Edit</button></a>
+        <a href="{% url 'delete_article' article.id %}"><button class="btn btn-default"> Delete</button></a>
+      {% endif %}
+    </div>
     </div>
 
 </div>

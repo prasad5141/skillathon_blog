@@ -7,12 +7,14 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def homeview(request):
     return render(request, 'home.html')
 
-
+@login_required(login_url='/login')
 def addarticleview(request):
     if request.method == "GET":
         form = ArticleForm()
@@ -22,17 +24,19 @@ def addarticleview(request):
         form = ArticleForm(request.POST)
         print(form)
         if form.is_valid():
-            form.save()
+            article = form.save(commit=False)
+            article.posted_by = request.user
+            article.save()
             messages.success(request, "Article added successfully")
         return redirect('/')
 
 
 def getarticles(request):
+    print(request.user)
     articles = Article.objects.all().order_by('-posted_on')
-    print(articles)
     return render(request, 'home.html', {'articles':articles})
 
-
+@login_required(login_url='/login')
 def updatearticleview(request, id):
     if request.method == "GET":
         print(id)
@@ -56,9 +60,21 @@ def updatearticleview(request, id):
 def articleview(request, id):
     if request.method == "GET":
         article = Article.objects.get(id=id)
-        return render(request, 'article.html', {"article":article} )
+        is_owner = False
+        if request.user == article.posted_by:
+            is_owner = True
+        return render(request, 'article.html', {"article":article, "is_owner":is_owner} )
 
 
+def deletearticle(request, id):
+    try:
+        article = Article.objects.get(id=id)
+        if request.user == article.posted_by:
+            article.delete()
+            return redirect('/')
+    except Exception as e:
+        print(e)
+        return redirect('/')
 
 
 def registrationview(request):
@@ -112,5 +128,3 @@ def loginview(request):
 def logoutview(request):
     logout(request)
     return redirect('/')
-
-
